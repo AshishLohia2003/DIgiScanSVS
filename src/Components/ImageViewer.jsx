@@ -19,10 +19,10 @@ function ImageViewer() {
     const [mifheight, setMifheight] = useState(0);
     const slideDirs = [
         // { label: "SVS", value: "SVS" },
-        { label: "Ld Bodies", value: "LD BODIES" },
+        // { label: "Ld Bodies", value: "LD BODIES" },s
         { label: "Dentino-Enamel Junction", value: "MDS" },
         { label: "Keratosis Lichenoides Chronica", value: "keratosis lichenoides chronica" },
-        // { label: "Neonatal Lines", value: "Neonatal Lines" },
+        { label: "Neonatal Lines", value: "Neonatal Lines" },
         // { label: "MDS_80X", value: "MDS_80X" },
         // { label: "Adenocarcinoma Esophagus", value: "Adenocarcinoma Esophagus" },
         // { label: "Appendix", value: "Appendix" },
