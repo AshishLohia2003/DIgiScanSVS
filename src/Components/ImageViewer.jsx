@@ -306,7 +306,7 @@ console.log(annotationVisibility)
             </Box>
             <Box>
                         <h2>Info</h2>
-                        {/* <Box>{infoContent}</Box> */}
+{/*                         <Box>{infoContent}</Box> */}
                         <p>Scanlens: {scanlens}</p>
                         <p>Width: {mifwidth}</p>
                         <p>Height: {mifheight}</p>
