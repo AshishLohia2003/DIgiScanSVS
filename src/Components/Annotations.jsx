@@ -29,20 +29,20 @@ const columns = [
   },
   {
     field: 'h',
-    headerName: 'Hi eght',
+    headerName: 'Hieght',
   },
   {
     field: 'type',
-    headerName: 'Heght',
+    headerName: 'Type',
   },
   {
     field: 'subtype',
-    headerName: 'Heght',
+    headerName: 'Subtype',
   },
-  {
-    field: 'positions',
-    headerName: 'Points'
-  }
+  // {
+  //   field: 'positions',
+  //   headerName: 'Points'
+  // }
 ];
 
 export default function Annotation_Table({rows}) {
