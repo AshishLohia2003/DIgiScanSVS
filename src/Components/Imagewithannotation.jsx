@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import dummy from "../assests/mds_1.png"
 import { Box, IconButton, Select, InputLabel, FormControl, MenuItem, Tooltip, Button, CircularProgress } from '@mui/material';
 import { GiGolfFlag } from "react-icons/gi";
 import Annotation_Table from './Annotations';
@@ -11,8 +12,8 @@ function ImageViewer() {
     const [annotaionTable, SetAnnotationTable] = useState([]);
     const [notesContent, setNotesContent] = useState('');
     const [infoContent, setInfoContent] = useState('');
-    const [zoomLevel, setZoomLevel] = useState(1);
-    const [scanlens, setScanlens] = useState(20);
+    const [zoomLevel, setZoomLevel] = useState(5);
+    const [scanlens, setScanlens] = useState(40);
     const [img_width, setImg_width] = useState(13312);
     const [img_height, setImg_height] = useState(13312);
     const [mifwidth, setMifwidth] = useState(0);
@@ -179,34 +180,6 @@ function ImageViewer() {
     const width = (img_width / scanlens) * zoomLevel;
     const height = (img_height / scanlens) * zoomLevel;
 
-
-    const renderAnnotations = () => {
-        if (!notesContent) return null;
-        const parser = new DOMParser();
-        const xmlDoc = parser.parseFromString(notesContent, 'text/xml');
-        const annotations = xmlDoc.getElementsByTagName('Annotation');
-
-        return Array.from(annotations).map((annotation, index) => {
-            const x = parseFloat(annotation.getElementsByTagName('P')[0].getAttribute('X'));
-            const y = parseFloat(annotation.getElementsByTagName('P')[0].getAttribute('Y'));
-            const detail = annotation.getElementsByTagName('Metadata')[0].getAttribute('Detail');
-
-            const adjustedX = (width / mifwidth) * x;
-            const adjustedY = (height / mifheight) * y;
-
-            return (
-                <Box key={index} style={{ position: 'absolute', left: adjustedX, top: adjustedY }}>
-                    <IconButton>
-                        <GiGolfFlag color='red' fontSize={("12px" * zoomLevel)} />
-                    </IconButton>
-                    <Box fontSize={"12px"} bgcolor="#fff" p="2px" borderRadius="5px" border="2px solid grey">
-                        {detail}
-                    </Box>
-                </Box>
-            );
-        });
-    };
-
     return (
         <Box display="grid" gap="10px">
             <Box
@@ -216,6 +189,10 @@ function ImageViewer() {
                 border="1px solid grey"
                 p={1}
                 borderRadius="5px"
+                width="97vw"
+                position="fixed"
+                zIndex="10000"
+                bgcolor="white"
             >
                 <Box>
                     <FormControl>
@@ -246,6 +223,8 @@ function ImageViewer() {
                 display="flex"
                 alignItems="center"
                 justifyContent="center"
+                position="relative"
+                top="80px"
             >
                 {isLoading && ( // Render loader if image is loading
                     <Box
@@ -271,7 +250,8 @@ function ImageViewer() {
                         alignItems: "center",
                     }} >
                     {annotationVisibility && <Annotations annotations={annotaionTable} width={width} height={height} mifwidth={mifwidth} mifheight={mifheight} zoomLevel={zoomLevel} />}
-                    <img id='image' src={imageUrl} width={width} height={height} alt="Full Image" />
+                    {/* <img id='image' src={imageUrl} width={width} height={height} alt="Full Image" /> */}
+                    <img id='image' src={dummy} width={width} height={height} alt="Full Image" />
                 </Box>
 
             </Box>
@@ -281,6 +261,8 @@ function ImageViewer() {
                 alignItems="center"
                 flexDirection="column"
                 gap="10px"
+                position="relative"
+                top="80px"
             >
                 <Button onClick={handleVisiblity} variant="outlined" sx={{ color: "grey", borderColor: "grey" }}>
                     Annotation Visibility
@@ -293,13 +275,13 @@ function ImageViewer() {
                     ) : ""}
                 </Box>
             </Box>
-            <Box>
+            {/* <Box>
                 <h2>Info</h2>
                 <Box>{infoContent}</Box>
                 <p>Scanlens: {scanlens}</p>
                 <p>Mifwidth: {mifwidth}</p>
                 <p>Mifheight: {mifheight}</p>
-            </Box>
+            </Box> */}
         </Box>
     );
 }

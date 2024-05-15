@@ -21,7 +21,7 @@ function Annotations({ annotations, width, height, mifwidth, mifheight, zoomLeve
                 const subtype = annotation.subtype;
                 const points = annotation.positions;
                 let adjustedX, adjustedY, adjustedW, adjustedH;
-                console.log((width / mifwidth) * parseFloat(x))
+                // console.log((width / mifwidth) * parseFloat(x))
                 if ((mifwidth / mifheight) > 1) {
                     adjustedX = (width / mifwidth) * parseFloat(x);
                     adjustedW = (width / mifwidth) * parseFloat(w);
@@ -34,7 +34,26 @@ function Annotations({ annotations, width, height, mifwidth, mifheight, zoomLeve
                     adjustedY = (height / mifheight) * parseFloat(y);
                     adjustedH = (height / mifheight) * parseFloat(h);
                 }
-                console.log( "adjusted",adjustedX)    
+
+                function adjustPolygonPoints(points, width, height, mifwidth, mifheight) {
+                    const adjustedPoints = points.map(point => {
+                        let adjustedX, adjustedY;
+
+                        if ((mifwidth / mifheight) > 1) {
+                            adjustedX = (width / mifwidth) * parseFloat(point.x);
+                            adjustedY = (height / mifwidth) * parseFloat(point.y);
+                        } else {
+                            adjustedX = (height / mifheight) * parseFloat(point.x);
+                            adjustedY = (height / mifheight) * parseFloat(point.y);
+                        }
+
+                        return { x: adjustedX, y: adjustedY };
+                    });
+
+                    return adjustedPoints;
+                }
+
+                const adjustedPoints = adjustPolygonPoints(points, width, height, mifwidth, mifheight);
 
                 switch (type) {
                     case 'Point2':
@@ -91,8 +110,8 @@ function Annotations({ annotations, width, height, mifwidth, mifheight, zoomLeve
                             case '2': // Polygon
                                 // Rendering logic for polygon
                                 return (
-                                    // <Polygon />
                                     <Box>
+                                        {/* <Polygon points={adjustedPoints} /> */}
                                         {/* Hello */}
                                     </Box>
                                 );

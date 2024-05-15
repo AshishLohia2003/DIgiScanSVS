@@ -8,6 +8,7 @@ function Position({ x, y, detail, zoomLevel }) {
     return (
         <Box>
             <Box
+                zIndex='900'
                 style={{
                     position: 'absolute',
                     // left: "3623.26px",
@@ -22,6 +23,7 @@ function Position({ x, y, detail, zoomLevel }) {
             >
             </Box>
             <Box
+                zIndex='900'
                 style={{
                     position: 'absolute',
                     left: x - 4,
@@ -45,6 +47,7 @@ function Position({ x, y, detail, zoomLevel }) {
                 borderRadius="5px"
                 border="2px solid grey"
                 fontWeight="800"
+                zIndex="1000"
             >
                 {detail}
             </Box>

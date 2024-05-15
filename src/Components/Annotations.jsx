@@ -29,7 +29,7 @@ const columns = [
   },
   {
     field: 'h',
-    headerName: 'Hieght',
+    headerName: 'Height',
   },
   {
     field: 'type',

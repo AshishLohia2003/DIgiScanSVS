@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Box, IconButton, Select, InputLabel, FormControl, MenuItem, Tooltip, Button, CircularProgress } from '@mui/material';
-import { GiGolfFlag } from "react-icons/gi";
 import Annotation_Table from './Annotations';
 import Annotations from './Annotation';
 
@@ -11,7 +10,7 @@ function ImageViewer() {
     const [annotaionTable, SetAnnotationTable] = useState([]);
     const [notesContent, setNotesContent] = useState('');
     const [infoContent, setInfoContent] = useState('');
-    const [zoomLevel, setZoomLevel] = useState(1);
+    const [zoomLevel, setZoomLevel] = useState(5);
     const [scanlens, setScanlens] = useState(20);
     const [img_width, setImg_width] = useState(0);
     const [img_height, setImg_height] = useState(0);
@@ -19,17 +18,17 @@ function ImageViewer() {
     const [mifheight, setMifheight] = useState(0);
     const slideDirs = [
         // { label: "SVS", value: "SVS" },
-        // { label: "Ld Bodies", value: "LD BODIES" },s
+        { label: "Ld Bodies", value: "LD BODIES" },
         { label: "Dentino-Enamel Junction", value: "MDS" },
         { label: "Keratosis Lichenoides Chronica", value: "keratosis lichenoides chronica" },
-        { label: "Neonatal Lines", value: "Neonatal Lines" },
+        // { label: "Neonatal Lines", value: "Neonatal Lines" },
         // { label: "MDS_80X", value: "MDS_80X" },
         // { label: "Adenocarcinoma Esophagus", value: "Adenocarcinoma Esophagus" },
         // { label: "Appendix", value: "Appendix" },
     ];
     const [availableZoomOptions, setAvailableZoomOptions] = useState([2, 5, 10, 20, 40, 60, 80, 100]);
     const [annotationVisibility, setAnnotationVisibilty] = useState(true);
-console.log(annotationVisibility)
+    console.log(annotationVisibility)
 
 
     useEffect(() => {
@@ -182,35 +181,7 @@ console.log(annotationVisibility)
 
     const width = (img_width / scanlens) * zoomLevel;
     const height = (img_height / scanlens) * zoomLevel;
-// console.log(width);
-// console.log(mifwidth);
 
-    const renderAnnotations = () => {
-        if (!notesContent) return null;
-        const parser = new DOMParser();
-        const xmlDoc = parser.parseFromString(notesContent, 'text/xml');
-        const annotations = xmlDoc.getElementsByTagName('Annotation');
-
-        return Array.from(annotations).map((annotation, index) => {
-            const x = parseFloat(annotation.getElementsByTagName('P')[0].getAttribute('X'));
-            const y = parseFloat(annotation.getElementsByTagName('P')[0].getAttribute('Y'));
-            const detail = annotation.getElementsByTagName('Metadata')[0].getAttribute('Detail');
-
-            const adjustedX = (width / mifwidth) * x;
-            const adjustedY = (height / mifheight) * y;
-
-            return (
-                <Box key={index} style={{ position: 'absolute', left: adjustedX, top: adjustedY }}>
-                    <IconButton>
-                        <GiGolfFlag color='red' fontSize={("12px" * zoomLevel)} />
-                    </IconButton>
-                    <Box fontSize={"12px"} bgcolor="#fff" p="2px" borderRadius="5px" border="2px solid grey">
-                        {detail}
-                    </Box>
-                </Box>
-            );
-        });
-    };
 
     return (
         <Box display="grid" gap="10px">
@@ -221,7 +192,10 @@ console.log(annotationVisibility)
                 border="1px solid grey"
                 p={1}
                 borderRadius="5px"
-                // width="97vw"
+                width="97vw"
+                position="fixed"
+                zIndex="10000"
+                bgcolor="white"
             >
                 <Box>
                     <FormControl>
@@ -241,7 +215,14 @@ console.log(annotationVisibility)
                         <IconButton
                             key={option}
                             onClick={() => handleZoom(option)}
-                            sx={{ border: "2px solid grey", width: "35px", height: "35px", fontSize: "12px" }}
+                            sx={{
+                                border: "2px solid grey",
+                                width: "35px",
+                                height: "35px",
+                                fontSize: "12px",
+                                bgcolor: option === zoomLevel ? "black" : "transparent",
+                                color: option === zoomLevel ? "white" : "black",
+                            }}
                         >
                             {`${option}X`}
                         </IconButton>
@@ -252,13 +233,15 @@ console.log(annotationVisibility)
                 display="flex"
                 alignItems="center"
                 justifyContent="center"
+                position="relative"
+                top="80px"
             >
-                {isLoading && ( // Render loader if image is loading
+                {isLoading && (
                     <Box
-                    // position="absolute"
-                    // top="50%"
-                    // left="50%"
-                    // transform="translate(-50%, -50%)"
+                        position="absolute"
+                        top="50%"
+                        left="50%"
+                        transform="translate(-50%, -50%)"
                     >
                         <CircularProgress />
                     </Box>
@@ -276,10 +259,21 @@ console.log(annotationVisibility)
                             justifyContent: "center",
                             alignItems: "center",
                         }} >
-                         {annotationVisibility && <Annotations annotations={annotaionTable} width={width} height={height} mifwidth={mifwidth} mifheight={mifheight} zoomLevel={zoomLevel} />}
+                        {annotationVisibility && <Annotations annotations={annotaionTable} width={width} height={height} mifwidth={mifwidth} mifheight={mifheight} zoomLevel={zoomLevel} />}
                         <img id='image' src={imageUrl} width={width} height={height} alt="Full Image" />
                     </Box>
-                ) : ""}
+                ) : (!isLoading && (
+                    <Box
+                        display="flex"
+                        justifyContent="center"
+                        alignItems="center"
+                        width="95vw"
+                        height="85vh"
+                        fontSize="40px"
+                    >
+                        Select a Slide to display
+                    </Box>
+                ))}
 
             </Box>
             <Box
@@ -288,6 +282,8 @@ console.log(annotationVisibility)
                 alignItems="center"
                 flexDirection="column"
                 gap="10px"
+                position="relative"
+                top="80px"
             >
                 {
                     imageUrl ? (
@@ -298,19 +294,19 @@ console.log(annotationVisibility)
                 }
 
                 <Box>
-                    {/* {notesContent} */}
-                    {notesContent ? (
+
+                    {imageUrl ? (notesContent ? (
                         <Annotation_Table rows={annotaionTable} />
-                    ) : ""}
+                    ) : "") : ""}
                 </Box>
             </Box>
-            <Box>
+            {/* <Box>
                         <h2>Info</h2>
-{/*                         <Box>{infoContent}</Box> */}
+                        <Box>{infoContent}</Box>
                         <p>Scanlens: {scanlens}</p>
-                        <p>Width: {mifwidth}</p>
-                        <p>Height: {mifheight}</p>
-                    </Box>
+                        <p>Mifwidth: {mifwidth}</p>
+                        <p>Mifheight: {mifheight}</p>
+                    </Box> */}
         </Box>
     );
 }
