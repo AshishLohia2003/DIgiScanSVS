@@ -1,0 +1,6 @@
+type ="point2" subtype="1"  -> arrow {(x1,y1) & (w , h) is mentioned and (x2, y2) = ((x1 + w),(y1 + h)) }, {(x1, y1) is the head of arrow}
+type ="point2" subtype="5"  -> position {(x , y) is the position}
+type ="point2" subtype="3"  -> ellipse
+type ="point2" subtype="2"  -> rectangle
+type ="pointn" subtype="2"  -> polygon
+type ="point2" subtype="0"  -> line {(x1,y1) & (w , h) is mentioned and (x2, y2) = ((x1 + w),(y1 + h)) }
