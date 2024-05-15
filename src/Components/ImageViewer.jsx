@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import dummy from "../assests/get_image.png"
+// import dummy from "../assests/get_image.png"
 import { Box, IconButton, Select, InputLabel, FormControl, MenuItem, Tooltip, Button, CircularProgress } from '@mui/material';
 import { GiGolfFlag } from "react-icons/gi";
 import Annotation_Table from './Annotations';
