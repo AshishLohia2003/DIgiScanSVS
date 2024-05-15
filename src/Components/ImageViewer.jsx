@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-// import dummy from "../assests/get_image.png"
 import { Box, IconButton, Select, InputLabel, FormControl, MenuItem, Tooltip, Button, CircularProgress } from '@mui/material';
 import { GiGolfFlag } from "react-icons/gi";
 import Annotation_Table from './Annotations';
@@ -279,7 +278,6 @@ console.log(annotationVisibility)
                         }} >
                          {annotationVisibility && <Annotations annotations={annotaionTable} width={width} height={height} mifwidth={mifwidth} mifheight={mifheight} zoomLevel={zoomLevel} />}
                         <img id='image' src={imageUrl} width={width} height={height} alt="Full Image" />
-                        {/* <img id='image' src={dummy} width={width} height={height} alt="Full Image" /> */}
                     </Box>
                 ) : ""}
 
