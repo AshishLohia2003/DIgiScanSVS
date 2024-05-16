@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import dummy from "../assests/mds_1.png"
+// import dummy from "../assests/annotation.png"
+import dummy from "../assests/annotation.png"
 import { Box, IconButton, Select, InputLabel, FormControl, MenuItem, Tooltip, Button, CircularProgress } from '@mui/material';
 import { GiGolfFlag } from "react-icons/gi";
 import Annotation_Table from './Annotations';
@@ -7,6 +8,7 @@ import Annotations from './Annotation';
 
 function ImageViewer() {
     const [imageUrl, setImageUrl] = useState('');
+    const [scale, setScale] = useState(0.49);
     const [slideDir, setSlideDir] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [annotaionTable, SetAnnotationTable] = useState([]);
@@ -26,7 +28,7 @@ function ImageViewer() {
     ];
     const [availableZoomOptions, setAvailableZoomOptions] = useState([2, 5, 10, 20, 40, 60, 80, 100]);
     const [annotationVisibility, setAnnotationVisibilty] = useState(true);
-    console.log(annotationVisibility)
+    console.log(scale)
 
 
     useEffect(() => {
@@ -104,6 +106,7 @@ function ImageViewer() {
             let scanlensVal = 0;
             let mifwidthVal = 0;
             let mifheightVal = 0;
+            let scale = 0;
             infoLines.forEach(line => {
                 if (line.includes('scanlens')) {
                     scanlensVal = parseFloat(line.split('=')[1]);
@@ -112,10 +115,15 @@ function ImageViewer() {
                 } else if (line.includes('mifheight')) {
                     mifheightVal = parseInt(line.split('=')[1]);
                 }
+                else if (line.includes('scale')) {
+                    scale = parseFloat(line.split('=')[1]);
+                }
             });
             setScanlens(scanlensVal);
             setMifwidth(mifwidthVal);
             setMifheight(mifheightVal);
+            setScale(scale);
+
         };
 
         if (infoContent) {
@@ -140,6 +148,7 @@ function ImageViewer() {
             const metadata = annotation.querySelector('Metadata');
             const name = metadata.getAttribute('Name');
             const description = metadata.getAttribute('Detail');
+            const scale = metadata.getAttribute('Scale');
             const type = annotation.getAttribute('Type');
             const subtype = annotation.getAttribute('Subtype');
             const points = annotation.querySelectorAll('P');
@@ -159,7 +168,7 @@ function ImageViewer() {
             }
 
 
-            rows.push({ color, name, description, x, y, id: (index + 1), w, h, type, subtype, positions });
+            rows.push({ color, name, description, x, y, id: (index + 1), w, h, type, subtype, positions, scale });
         }
         SetAnnotationTable(rows);
     }, [notesContent]);
@@ -212,7 +221,14 @@ function ImageViewer() {
                         <IconButton
                             key={option}
                             onClick={() => handleZoom(option)}
-                            sx={{ border: "2px solid grey", width: "35px", height: "35px", fontSize: "12px" }}
+                            sx={{
+                                border: "2px solid grey",
+                                width: "35px",
+                                height: "35px",
+                                fontSize: "12px",
+                                bgcolor: option === zoomLevel ? "black" : "transparent",
+                                color: option === zoomLevel ? "white" : "black",
+                            }}
                         >
                             {`${option}X`}
                         </IconButton>
@@ -249,7 +265,7 @@ function ImageViewer() {
                         justifyContent: "center",
                         alignItems: "center",
                     }} >
-                    {annotationVisibility && <Annotations annotations={annotaionTable} width={width} height={height} mifwidth={mifwidth} mifheight={mifheight} zoomLevel={zoomLevel} />}
+                    {annotationVisibility && <Annotations annotations={annotaionTable} width={width} height={height} mifwidth={mifwidth} mifheight={mifheight} zoomLevel={zoomLevel} scale_image={scale} />}
                     {/* <img id='image' src={imageUrl} width={width} height={height} alt="Full Image" /> */}
                     <img id='image' src={dummy} width={width} height={height} alt="Full Image" />
                 </Box>

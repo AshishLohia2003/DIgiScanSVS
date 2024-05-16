@@ -1,46 +1,44 @@
 import React from 'react';
-import { Box, IconButton } from '@mui/material';
+import { Box } from '@mui/material';
 import { GiGolfFlag } from 'react-icons/gi';
 
-function Position({ x, y, detail, zoomLevel }) {
-    // console.log('x',x)
-    // console.log('y',y)  
+function Position({ x, y, detail, zoomLevel, scale, width }) {
+    const offsetX = 0.02 * width;
+    const offsetY = 0.02 * width;
+
     return (
         <Box>
+            {/* Position marker */}
             <Box
-                zIndex='900'
                 style={{
                     position: 'absolute',
-                    // left: "3623.26px",
-                    left: x,
-                    top: y,
+                    left: `${x + offsetX}px`,
+                    top: `${y + offsetY}px`,
                     width: '12px',
                     height: '12px',
-                    // backgroundColor: 'blue',
                     borderRadius: '50%',
                     border: "2px solid black"
                 }}
-            >
-            </Box>
+            />
+            {/* Flag icon */}
             <Box
-                zIndex='900'
                 style={{
                     position: 'absolute',
-                    left: x - 4,
-                    top: y - 15,
+                    left: `${(x + offsetX) - 4}px`,
+                    top: `${(y + offsetY) - 15}px`,
                 }}
             >
-                <GiGolfFlag color='red' fontSize={("25px")} />
-
+                <GiGolfFlag color='red' fontSize="25px" />
             </Box>
+            {/* Detail box */}
             <Box
                 style={{
                     position: 'absolute',
-                    left: x + 10,
-                    top: y + 15,
+                    left: `${(x + offsetX) + 10}px`,
+                    top: `${(y + offsetY) + 15}px`,
                 }}
                 width='fit-content'
-                fontSize={"12px"}
+                fontSize="12px"
                 color="blue"
                 bgcolor="aliceblue"
                 p="2px"

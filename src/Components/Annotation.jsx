@@ -8,7 +8,7 @@ import Rectangle from '../shapes/Rectangle';
 import Line from '../shapes/Line';
 import Polygon from '../shapes/Polygon';
 
-function Annotations({ annotations, width, height, mifwidth, mifheight, zoomLevel }) {
+function Annotations({ annotations, width, height, mifwidth, mifheight, zoomLevel, scale_image }) {
     return (
         <React.Fragment>
             {annotations.map((annotation, index) => {
@@ -20,8 +20,9 @@ function Annotations({ annotations, width, height, mifwidth, mifheight, zoomLeve
                 const type = annotation.type;
                 const subtype = annotation.subtype;
                 const points = annotation.positions;
+                // console.log(points)
+                const scale = annotation.scale;
                 let adjustedX, adjustedY, adjustedW, adjustedH;
-                // console.log((width / mifwidth) * parseFloat(x))
                 if ((mifwidth / mifheight) > 1) {
                     adjustedX = (width / mifwidth) * parseFloat(x);
                     adjustedW = (width / mifwidth) * parseFloat(w);
@@ -35,26 +36,6 @@ function Annotations({ annotations, width, height, mifwidth, mifheight, zoomLeve
                     adjustedH = (height / mifheight) * parseFloat(h);
                 }
 
-                function adjustPolygonPoints(points, width, height, mifwidth, mifheight) {
-                    const adjustedPoints = points.map(point => {
-                        let adjustedX, adjustedY;
-
-                        if ((mifwidth / mifheight) > 1) {
-                            adjustedX = (width / mifwidth) * parseFloat(point.x);
-                            adjustedY = (height / mifwidth) * parseFloat(point.y);
-                        } else {
-                            adjustedX = (height / mifheight) * parseFloat(point.x);
-                            adjustedY = (height / mifheight) * parseFloat(point.y);
-                        }
-
-                        return { x: adjustedX, y: adjustedY };
-                    });
-
-                    return adjustedPoints;
-                }
-
-                const adjustedPoints = adjustPolygonPoints(points, width, height, mifwidth, mifheight);
-
                 switch (type) {
                     case 'Point2':
                         switch (subtype) {
@@ -67,6 +48,9 @@ function Annotations({ annotations, width, height, mifwidth, mifheight, zoomLeve
                                         x2={adjustedX + adjustedW}
                                         y2={adjustedY + adjustedH}
                                         detail={detail}
+                                        scale={scale}
+                                        scale_image={scale_image}
+                                        width={width}
                                     />
                                 );
                             case '5': // Position
@@ -79,17 +63,17 @@ function Annotations({ annotations, width, height, mifwidth, mifheight, zoomLeve
                                     //         {detail}
                                     //     </Box>
                                     // </Box>
-                                    <Position x={adjustedX} y={adjustedY} detail={detail} zoomLevel={zoomLevel} />
+                                    <Position x={adjustedX} y={adjustedY} detail={detail} zoomLevel={zoomLevel} scale={scale} width={width} />
                                 );
                             case '3': // Ellipse
                                 // Rendering logic for ellipse
                                 return (
-                                    <Ellipse x={adjustedX} y={adjustedY} detail={detail} width={adjustedW} height={adjustedH} />
+                                    <Ellipse x={adjustedX} y={adjustedY} detail={detail} width={adjustedW} height={adjustedH} scale={width} />
                                 );
                             case '2': // Rectangle
                                 // Rendering logic for rectangle
                                 return (
-                                    <Rectangle x={adjustedX} y={adjustedY} detail={detail} width={adjustedW} height={adjustedH} />
+                                    <Rectangle x={adjustedX} y={adjustedY} detail={detail} width={adjustedW} height={adjustedH} scale={width} />
                                 );
                             case '0': // Line
                                 // Rendering logic for line
@@ -100,6 +84,7 @@ function Annotations({ annotations, width, height, mifwidth, mifheight, zoomLeve
                                         x2={adjustedX + adjustedW}
                                         y2={adjustedY + adjustedH}
                                         detail={detail}
+                                        width={width}
                                     />
                                 );
                             default:
@@ -111,7 +96,7 @@ function Annotations({ annotations, width, height, mifwidth, mifheight, zoomLeve
                                 // Rendering logic for polygon
                                 return (
                                     <Box>
-                                        {/* <Polygon points={adjustedPoints} /> */}
+                                        <Polygon points={points} mifheight={mifheight} mifwidth={mifwidth} width={width} height={height} /> 
                                         {/* Hello */}
                                     </Box>
                                 );

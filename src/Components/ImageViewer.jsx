@@ -6,6 +6,7 @@ import Annotations from './Annotation';
 function ImageViewer() {
     const [imageUrl, setImageUrl] = useState('');
     const [slideDir, setSlideDir] = useState('');
+    const [scale, setScale] = useState(0.49);
     const [isLoading, setIsLoading] = useState(false);
     const [annotaionTable, SetAnnotationTable] = useState([]);
     const [notesContent, setNotesContent] = useState('');
@@ -17,18 +18,18 @@ function ImageViewer() {
     const [mifwidth, setMifwidth] = useState(0);
     const [mifheight, setMifheight] = useState(0);
     const slideDirs = [
-        // { label: "SVS", value: "SVS" },
-        { label: "Ld Bodies", value: "LD BODIES" },
+        { label: "SVS", value: "SVS" },
+        // { label: "Ld Bodies", value: "LD BODIES" },
         { label: "Dentino-Enamel Junction", value: "MDS" },
         { label: "Keratosis Lichenoides Chronica", value: "keratosis lichenoides chronica" },
-        // { label: "Neonatal Lines", value: "Neonatal Lines" },
-        // { label: "MDS_80X", value: "MDS_80X" },
+        { label: "Neonatal Lines", value: "Neonatal Lines" },
+        { label: "MDS_80X", value: "80X test" },
         // { label: "Adenocarcinoma Esophagus", value: "Adenocarcinoma Esophagus" },
         // { label: "Appendix", value: "Appendix" },
     ];
     const [availableZoomOptions, setAvailableZoomOptions] = useState([2, 5, 10, 20, 40, 60, 80, 100]);
     const [annotationVisibility, setAnnotationVisibilty] = useState(true);
-    console.log(annotationVisibility)
+    // console.log(annotationVisibility)
 
 
     useEffect(() => {
@@ -100,12 +101,15 @@ function ImageViewer() {
             });
     };
 
+
+
     useEffect(() => {
         const parseInfoContent = () => {
             const infoLines = infoContent.split('\n');
             let scanlensVal = 0;
             let mifwidthVal = 0;
             let mifheightVal = 0;
+            let scale = 0;
             infoLines.forEach(line => {
                 if (line.includes('scanlens')) {
                     scanlensVal = parseFloat(line.split('=')[1]);
@@ -114,10 +118,15 @@ function ImageViewer() {
                 } else if (line.includes('mifheight')) {
                     mifheightVal = parseInt(line.split('=')[1]);
                 }
+                else if (line.includes('scale')) {
+                    scale = parseFloat(line.split('=')[1]);
+                }
             });
             setScanlens(scanlensVal);
             setMifwidth(mifwidthVal);
             setMifheight(mifheightVal);
+            setScale(scale);
+
         };
 
         if (infoContent) {
@@ -259,7 +268,7 @@ function ImageViewer() {
                             justifyContent: "center",
                             alignItems: "center",
                         }} >
-                        {annotationVisibility && <Annotations annotations={annotaionTable} width={width} height={height} mifwidth={mifwidth} mifheight={mifheight} zoomLevel={zoomLevel} />}
+                        {annotationVisibility && <Annotations annotations={annotaionTable} width={width} height={height} mifwidth={mifwidth} mifheight={mifheight} zoomLevel={zoomLevel} scale_image={scale} />}
                         <img id='image' src={imageUrl} width={width} height={height} alt="Full Image" />
                     </Box>
                 ) : (!isLoading && (
