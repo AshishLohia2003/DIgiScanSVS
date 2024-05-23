@@ -3,8 +3,6 @@ import { Box } from '@mui/material';
 import { GiGolfFlag } from 'react-icons/gi';
 
 function Position({ x, y, detail, zoomLevel, scale, width }) {
-    const offsetX = 0.02 * width;
-    const offsetY = 0.02 * width;
 
     return (
         <Box>
@@ -12,8 +10,8 @@ function Position({ x, y, detail, zoomLevel, scale, width }) {
             <Box
                 style={{
                     position: 'absolute',
-                    left: `${x + offsetX}px`,
-                    top: `${y + offsetY}px`,
+                    left: `${x}px`,
+                    top: `${y}px`,
                     width: '12px',
                     height: '12px',
                     borderRadius: '50%',
@@ -24,8 +22,8 @@ function Position({ x, y, detail, zoomLevel, scale, width }) {
             <Box
                 style={{
                     position: 'absolute',
-                    left: `${(x + offsetX) - 4}px`,
-                    top: `${(y + offsetY) - 15}px`,
+                    left: `${(x) - 4}px`,
+                    top: `${(y) - 15}px`,
                 }}
             >
                 <GiGolfFlag color='red' fontSize="25px" />
@@ -34,8 +32,8 @@ function Position({ x, y, detail, zoomLevel, scale, width }) {
             <Box
                 style={{
                     position: 'absolute',
-                    left: `${(x + offsetX) + 10}px`,
-                    top: `${(y + offsetY) + 15}px`,
+                    left: `${(x) + 10}px`,
+                    top: `${(y) + 15}px`,
                 }}
                 width='fit-content'
                 fontSize="12px"

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-// import dummy from "../assests/annotation.png"
+// import dummy from "../assests/get_image.png"
 import dummy from "../assests/annotation.png"
 import { Box, IconButton, Select, InputLabel, FormControl, MenuItem, Tooltip, Button, CircularProgress } from '@mui/material';
 import { GiGolfFlag } from "react-icons/gi";
@@ -16,8 +16,8 @@ function ImageViewer() {
     const [infoContent, setInfoContent] = useState('');
     const [zoomLevel, setZoomLevel] = useState(5);
     const [scanlens, setScanlens] = useState(40);
-    const [img_width, setImg_width] = useState(13312);
-    const [img_height, setImg_height] = useState(13312);
+    const [img_width, setImg_width] = useState(0);
+    const [img_height, setImg_height] = useState(0);
     const [mifwidth, setMifwidth] = useState(0);
     const [mifheight, setMifheight] = useState(0);
     const slideDirs = [
@@ -33,7 +33,7 @@ function ImageViewer() {
 
     useEffect(() => {
         if (slideDir) {
-            // fetchImage();
+            fetchImage();
             fetchNotes();
             fetchInfo();
         }
@@ -266,8 +266,8 @@ function ImageViewer() {
                         alignItems: "center",
                     }} >
                     {annotationVisibility && <Annotations annotations={annotaionTable} width={width} height={height} mifwidth={mifwidth} mifheight={mifheight} zoomLevel={zoomLevel} scale_image={scale} />}
-                    {/* <img id='image' src={imageUrl} width={width} height={height} alt="Full Image" /> */}
-                    <img id='image' src={dummy} width={width} height={height} alt="Full Image" />
+                    <img id='image' src={imageUrl} width={width} height={height} alt="Full Image" />
+                    {/* <img id='image' src={dummy} width={width} height={height} alt="Full Image" /> */}
                 </Box>
 
             </Box>

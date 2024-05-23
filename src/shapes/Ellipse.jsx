@@ -2,8 +2,6 @@ import React from 'react';
 import { Box } from '@mui/material';
 
 function Ellipse({ x, y, width, height, detail, scale }) {
-    const offsetX = 0.02 * scale;
-    const offsetY = 0.02 * scale;
 
     return (
         <Box
@@ -11,8 +9,8 @@ function Ellipse({ x, y, width, height, detail, scale }) {
             zIndex="900"
             style={{
                 position: 'absolute',
-                left: x + offsetX,
-                top: y + offsetY,
+                left: x,
+                top: y,
                 width: width,
                 height: height,
                 borderRadius: '50%',
@@ -21,7 +19,6 @@ function Ellipse({ x, y, width, height, detail, scale }) {
 
             }}
         >
-            {/* Add ellipse detail if needed */}
         </Box>
     );
 }
