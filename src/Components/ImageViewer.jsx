@@ -23,7 +23,7 @@ function ImageViewer() {
         { label: "Dentino-Enamel Junction", value: "MDS" },
         { label: "Keratosis Lichenoides Chronica", value: "keratosis lichenoides chronica" },
         { label: "Neonatal Lines", value: "Neonatal Lines" },
-        { label: "MDS_80X", value: "80X test" },
+        // { label: "MDS_80X", value: "80X test" },
         // { label: "Adenocarcinoma Esophagus", value: "Adenocarcinoma Esophagus" },
         // { label: "Appendix", value: "Appendix" },
     ];
@@ -34,6 +34,8 @@ function ImageViewer() {
 
     useEffect(() => {
         if (slideDir) {
+            setIsLoading(true);
+            setImageUrl('');
             fetchImage();
             fetchNotes();
             fetchInfo();
@@ -248,7 +250,7 @@ function ImageViewer() {
                 {isLoading && (
                     <Box
                         position="absolute"
-                        top="50%"
+                        top="30vh"
                         left="50%"
                         transform="translate(-50%, -50%)"
                     >
